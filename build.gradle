@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '6.1.0'
+}
+
+def mainClass = 'fr.implement.imorpion.Main'
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+
+run {
+    mainClassName = mainClass
+}
+
+shadowJar {
+    project.configurations.implementation.canBeResolved(true)
+    configurations = [project.configurations.implementation]
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': mainClass
+        )
+    }
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven {
+        name 'm2-dv8tion'
+        url 'https://m2.dv8tion.net/releases'
+    }
+}
+
+
+dependencies {
+    implementation 'net.dv8tion:JDA:4.4.0_352'
+    //implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'ch.qos.logback:logback-classic:1.3.0-alpha13'
+    implementation 'mysql:mysql-connector-java:8.0.28'
+}
